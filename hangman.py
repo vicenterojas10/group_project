@@ -1,12 +1,18 @@
 from random import choice
-hang_words = [
-    'toyota', 'ford', 'chevrolet', 'honda', 'nissan', 'bmw', 'mercedes', 'volkswagen', 'audi', 'hyundai',
-    'kia', 'peugeot', 'renault', 'subaru', 'mazda', 'volvo', 'fiat', 'porsche', 'lexus', 'jeep',
-    'cadillac', 'dodge', 'tesla', 'infiniti', 'lincoln', 'buick', 'chrysler', 'acura', 'lamborghini', 'bentley',
-    'mitsubishi', 'jaguar', 'rollsroyce', 'mclaren', 'ferrari', 'astonmartin', 'landrover', 'maserati', 'gmc', 'alfaromeo',
-    'citroen', 'skoda', 'mini', 'suzuki', 'saab', 'seat', 'dacia', 'lancia', 'lotus', 'bugatti'
-]
 
+
+hang_dict = {
+    'toyota': 'Japan', 'ford': 'USA', 'chevrolet': 'USA', 'honda': 'Japan', 'nissan': 'Japan', 'bmw': 'Germany',
+    'mercedes': 'Germany', 'volkswagen': 'Germany', 'audi': 'Germany', 'hyundai': 'South Korea', 'kia': 'South Korea',
+    'peugeot': 'France', 'renault': 'France', 'subaru': 'Japan', 'mazda': 'Japan', 'volvo': 'Sweden',
+    'fiat': 'Italy', 'porsche': 'Germany', 'lexus': 'Japan', 'jeep': 'USA', 'cadillac': 'USA', 'dodge': 'USA',
+    'tesla': 'USA', 'infiniti': 'Japan', 'lincoln': 'USA', 'buick': 'USA', 'chrysler': 'USA', 'acura': 'Japan',
+    'lamborghini': 'Italy', 'bentley': 'UK', 'mitsubishi': 'Japan', 'jaguar': 'UK', 'rollsroyce': 'UK', 'mclaren': 'UK',
+    'ferrari': 'Italy', 'astonmartin': 'UK', 'landrover': 'UK', 'maserati': 'Italy', 'gmc': 'USA', 'alfaromeo': 'Italy',
+    'citroen': 'France', 'skoda': 'Czech Republic', 'mini': 'UK', 'suzuki': 'Japan', 'saab': 'Sweden', 'seat': 'Spain',
+    'dacia': 'Romania', 'lancia': 'Italy', 'lotus': 'UK', 'bugatti': 'France', 'koenigsegg': 'Sweden', 'rimac': 'Croatia',
+    'pagani': 'Italy', 'smart': 'Germany', 'opel': 'Germany', 'mg': 'UK', 'polestar': 'Sweden', "lada": "Russia", "ram": "USA"
+}
 
 possibilities = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
@@ -78,14 +84,20 @@ def hanged_man(act_word, counter):
 
 def game():
     print("\n\nWelcome to Car Brand Hangman, let's begin\n\n")
-    word = choice(hang_words)
+    word = choice(list(hang_dict.keys()))
     guessed_letters = []  # Track all guessed letters
     act_word = first_replacer(word)  # Initial masked word
     counter = 0  # Count of incorrect guesses
     attempts = 6  # Total allowed attempts
+    hint_given = False
 
     while counter < attempts:
         hanged_man(act_word, counter)
+        if counter == attempts - 1 and not hint_given:
+            hint_request = input("This is your last attempt. Would you like a hint? (yes/no): ").lower()
+            if hint_request == "yes":
+                print(f"Hint: The brand is from {hang_dict[word]}")
+                hint_given = True  # Ensure hint is not offered again
         letter = input("Input a letter: ").lower()
 
         while letter not in possibilities or letter in guessed_letters:
